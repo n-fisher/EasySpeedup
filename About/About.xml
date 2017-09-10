@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <ModMetaData>
-	<name>Easy Speedup - Development</name>
+	<name>Easy Speedup</name>
 	<author>fyarn</author>
 	<targetVersion>0.17.1557</targetVersion>
 	<description>Simple-to-activate 4x speed with GUI icon or keyboard key '4'. No dev mode required!</description>
