@@ -55,16 +55,15 @@ namespace EasySpeedup
         {
             timerRect.x -= 30f;
             timerRect.width +=30f;
+            // insane credits to @spdskatr#1657 for this one line beauty
+            //successfully prints
+            Log.Message(typeof(Thing).Assembly.ToString());
+            //ERROR OCCURS HERE
+            //does not print
+            Log.Message(typeof(Thing).Assembly.GetType("TexButton").ToString());
+            Log.Message(((Texture2D[])typeof(Thing).Assembly.GetType("TexButton").GetField("SpeedButtonTextures").GetValue(null))[4].ToString());
+            ((Texture2D[])typeof(Thing).Assembly.GetType("TexButton").GetField("SpeedButtonTextures").GetValue(null))[4] =
+                ContentFinder<Texture2D>.Get("UI/TimeControls/TimeSpeedButton_Ultrafast", true);
         }
     }
-
-    //Not Working
-    /*[HarmonyPatch(typeof(Thing).Assembly.GetType("TexButton").ToString(), typeof(Thing).Assembly.GetType("TexButton").GetMethod(".cctor"))]
-    public static class WidgetsPatch
-    {
-        public static void Transpile(ref Rect butRect, ref Texture2D tex)
-        {
-            //"UI/TimeControls/TimeSpeedButton_Ultrafast"
-        }
-    }*/
 }
