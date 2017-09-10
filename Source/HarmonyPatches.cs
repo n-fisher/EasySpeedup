@@ -23,6 +23,7 @@ namespace EasySpeedup
     [HarmonyPatch(typeof(TimeControls), "DoTimeControlsGUI")] // Target class for patching, generally required.
     public static class TimeControlsPatch
     {
+        // stops checks for devmode enabled and draws/activates 4x speed mode
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             // replace the only blt at the end of the for (int index = 0; index < TimeControls.CachedTimeSpeedValues.Length; ++index) loop
@@ -49,10 +50,21 @@ namespace EasySpeedup
             }
         }
 
+        // add room to the time rectangle for 5th speed button
         public static void Prefix(ref Rect timerRect)
         {
             timerRect.x -= 30f;
             timerRect.width +=30f;
         }
     }
+
+    //Not Working
+    /*[HarmonyPatch(typeof(Thing).Assembly.GetType("TexButton").ToString(), typeof(Thing).Assembly.GetType("TexButton").GetMethod(".cctor"))]
+    public static class WidgetsPatch
+    {
+        public static void Transpile(ref Rect butRect, ref Texture2D tex)
+        {
+            //"UI/TimeControls/TimeSpeedButton_Ultrafast"
+        }
+    }*/
 }
