@@ -13,9 +13,11 @@ namespace EasySpeedup
     {
         static PatchConstructor()
         {
-            HarmonyInstance.DEBUG = true;
             var harmony = HarmonyInstance.Create("EasySpeedup");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
+            // credits to @spdskatr#1657 for this one line beauty, changes 4x speed button to be an actual quad arrow
+            ((Texture2D[])typeof(Thing).Assembly.GetType("Verse.TexButton").GetField("SpeedButtonTextures").GetValue(null))[4] =
+                ContentFinder<Texture2D>.Get("UI/TimeControls/TimeSpeedButton_Ultrafast", true);
         }
     }
 
@@ -26,11 +28,11 @@ namespace EasySpeedup
         // stops checks for devmode enabled and draws/activates 4x speed mode
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            // replace the only blt at the end of the for (int index = 0; index < TimeControls.CachedTimeSpeedValues.Length; ++index) loop
-            // with a bne, changing it to for (int index = 0; index == TimeControls.CachedTimeSpeedValues.Length; ++index)
+            // replace codeinstructions in order
             List<CodeInstruction> list = new List<CodeInstruction>(instructions);
             for (int i = 0; i < list.Count; i++)
             {
+                // find opcode where they check if DevMode is being checked, and replace it with a True
                 if (list[i].opcode == OpCodes.Call && list[i].operand == AccessTools.Property(typeof(Prefs), nameof(Prefs.DevMode)).GetGetMethod())
                 {
                     CodeInstruction code = list[i];
@@ -38,7 +40,11 @@ namespace EasySpeedup
                     yield return code;
                     continue;
                 }
+
+                // yield latest codeinstruction
                 yield return list[i];
+                
+                // find opcode before the check for the 5th speed option (ultra), replaces it with a true statement
                 if (list[i].opcode == OpCodes.Stloc_3)
                 {
                     i += 3;
@@ -53,17 +59,8 @@ namespace EasySpeedup
         // add room to the time rectangle for 5th speed button
         public static void Prefix(ref Rect timerRect)
         {
-            timerRect.x -= 30f;
-            timerRect.width +=30f;
-            // insane credits to @spdskatr#1657 for this one line beauty
-            //successfully prints
-            Log.Message(typeof(Thing).Assembly.ToString());
-            //ERROR OCCURS HERE
-            //does not print
-            Log.Message(typeof(Thing).Assembly.GetType("TexButton").ToString());
-            Log.Message(((Texture2D[])typeof(Thing).Assembly.GetType("TexButton").GetField("SpeedButtonTextures").GetValue(null))[4].ToString());
-            ((Texture2D[])typeof(Thing).Assembly.GetType("TexButton").GetField("SpeedButtonTextures").GetValue(null))[4] =
-                ContentFinder<Texture2D>.Get("UI/TimeControls/TimeSpeedButton_Ultrafast", true);
+            timerRect.x -= 35f;
+            timerRect.width +=35f;
         }
     }
 }
