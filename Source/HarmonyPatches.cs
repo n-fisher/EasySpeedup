@@ -30,6 +30,7 @@ namespace EasySpeedup
         {
             // replace codeinstructions in order
             List<CodeInstruction> list = new List<CodeInstruction>(instructions);
+            int stlocsLeft = 2;
             for (int i = 0; i < list.Count; i++)
             {
                 // find opcode where they check if DevMode is being checked, and replace it with a True
@@ -45,7 +46,7 @@ namespace EasySpeedup
                 yield return list[i];
                 
                 // find opcode before the check for the 5th speed option (ultra), replaces it with a true statement
-                if (list[i].opcode == OpCodes.Stloc_3)
+                if (list[i].opcode == OpCodes.Stloc_S && --stlocsLeft == 0)
                 {
                     i += 3;
                     CodeInstruction inst = list[i];
