@@ -5,6 +5,9 @@ Simple-to-activate 4x speed with GUI icon or keyboard key '4'. No dev mode requi
 None.
 
 ## Updates
+Oct 17 2018
+1.0 Update
+
 Sep 8 20178
 B19 Update
 
