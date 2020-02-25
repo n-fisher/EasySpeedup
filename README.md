@@ -22,7 +22,9 @@ Initial Release
 
 ## Download
 Github (with Source): https://github.com/fyarn/EasySpeedup
+
 Direct: https://github.com/fyarn/EasySpeedup/archive/master.zip
+
 Steam: https://steamcommunity.com/sharedfiles/filedetails/?id=1132557840
 
 ## How to install (non-Steam users):
