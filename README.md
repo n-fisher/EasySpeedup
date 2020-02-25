@@ -5,6 +5,9 @@ Simple-to-activate 4x speed with GUI icon or keyboard key '4'. No dev mode requi
 None.
 
 ## Updates
+Feb 24 2020
+1.1 Update
+
 Oct 17 2018
 1.0 Update
 
@@ -16,9 +19,6 @@ B18 Update
 
 Sep 10 2017
 Initial Release
-
-## Author/Mod Team
-fyarn
 
 ## Download
 Github (with Source): https://github.com/fyarn/EasySpeedup
