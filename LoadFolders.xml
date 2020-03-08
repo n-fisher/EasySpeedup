@@ -1,9 +1,8 @@
 ﻿<loadFolders>
     <default>
-        <li></li>
+        <li>1.0</li>
     </default>
     <v1.1>
-        <li></li>
-        <li>1.1</li>
+        <li>Common</li>
     </v1.1>
 </loadFolders>
