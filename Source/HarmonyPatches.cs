@@ -25,6 +25,7 @@ namespace EasySpeedup
     public static class TimeControlsPatch
     {
         private static readonly MethodInfo devGetter = AccessTools.Property(typeof(Prefs), nameof(Prefs.DevMode)).GetGetMethod();
+        private static readonly MethodInfo drawLine = AccessTools.Method(typeof(Widgets), nameof(Widgets.DrawLineHorizontal));
 
         // stops checks for devmode enabled and draws/activates 4x speed mode
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
@@ -32,6 +33,7 @@ namespace EasySpeedup
             // replace codeinstructions in order
             var list = new List<CodeInstruction>(instructions);
             var buttonDrawn = false;
+            var lineWidthFixed = false;
             var devModeEnabled = false;
 
             for (var i = 0; i < list.Count; i++) {
@@ -43,6 +45,16 @@ namespace EasySpeedup
                     buttonDrawn = true;
                     yield return new CodeInstruction(list[i]);
                     continue;
+                }
+
+                if (!lineWidthFixed && code.LoadsConstant(2d) && (i + 2) < list.Count) {
+                    var codeAfterNext = list[i + 2];
+                    if (codeAfterNext.Calls(drawLine)) {
+                        code.operand = 3f;
+                        lineWidthFixed = true;
+                        yield return code;
+                        continue;
+                    }
                 }
 
                 // find opcode where they check if DevMode is enabled, and replace it with a True
